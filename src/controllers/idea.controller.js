@@ -1,34 +1,57 @@
-let _userService = null;
+let _ideaService = null;
 
-class UserController {
-    constructor({ UserService }) {
-        _userService: UserService
+class IdeaController {
+    constructor({ IdeaService }) {
+        _ideaService: IdeaService
     }
 
     async get(req, res) {
-        const { userId } = req.params; // todo lo que va en la Url
-        const user = await _userService.get(userId);
-        return res.send(user);
+        const { ideaId } = req.params; // todo lo que va en la Url
+        const idea = await _ideaService.get(ideaId);
+        return res.send(idea);
     }
 
     async getAll(req, res) {
-        const users = await _userService.getAll();
-        return res.send(users)
+        const ideas = await _ideaService.getAll();
+        return res.send(ideas)
+    }
+
+    async create(req, res) {
+        const { body } = req;
+        const createIdea = await _ideaService.create(body);
+        return res.status(201).send(createIdea);
     }
 
     async update(req, res) {
         const { body } = req;
-        const { userId } = req.params;
-        const updateUser = await _userService.update(userId, body);
-        return res.send(updateUser);
+        const { ideaId } = req.params;
+        const updateIdea = await _ideaService.update(ideaId, body);
+        return res.send(updateIdea);
     }
 
     async delete(req, res) {
-        const { userId } = req.params
-        const deleteUser = await _userService.delete(userId);
-        return res.send(deleteUser);
+        const { ideaId } = req.params
+        const deleteIdea = await _ideaService.delete(ideaId);
+        return res.send(deleteIdea);
+    }
+    async getUserIdeas(req, res) {
+        const { userId } = res.params;
+        const ideas = await _ideaService.getUserIdeas(userId);
+        return res.send(ideas);
+    }
+
+    async upvoteIdea(req, res) {
+        const { ideaId } = req.params;
+        const idea = await _ideaService.upvoteIdea(ideaId);
+        return res.send(idea);
+    }
+
+    async downvoteIdea(req, res) {
+        const { ideaId } = req.params;
+        const idea = await _ideaService.upvoteIdea(ideaId);
+        return res.send(idea);
     }
 
 }
 
-module.exports = UserController;
+module.exports = IdeaController;
